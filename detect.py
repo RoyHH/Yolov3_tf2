@@ -10,6 +10,10 @@ from yolov3_tf2.models import (
 from yolov3_tf2.dataset import transform_images, load_tfrecord_dataset
 from yolov3_tf2.utils import draw_outputs
 
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
 flags.DEFINE_string('classes', './data/coco.names', 'path to classes file')
 flags.DEFINE_string('weights', './checkpoints/yolov3.tf',
                     'path to weights file')
