@@ -76,7 +76,7 @@ def main(_argv):
                                            np.array(scores[0][i]),
                                            np.array(boxes[0][i])))
 
-    # 图像上画出检测出的目标，并标注相关信息
+    # 图像上画出检测出的目标，并标注相关信息，但是nums是什么？
     img = cv2.cvtColor(img_raw.numpy(), cv2.COLOR_RGB2BGR)
     img = draw_outputs(img, (boxes, scores, classes, nums), class_names)
     cv2.imwrite(FLAGS.output, img)
@@ -93,7 +93,7 @@ if __name__ == '__main__':
 '''
 line 59
 检测图片的读入接口，当前是单个输入，这块需要修改成 批量识别 或者 按数据喂入信号进行识别启动
-        
+
 line 84
 检测图片的输出接口，当前是单个输出，这块需要修改成 按照输入名称输出对应的文件     
 '''

@@ -43,6 +43,7 @@ def main(_argv):
 
     times = []
 
+    # 异常处理，try判断是否启动摄像头，except判断是否检测已有视频
     try:
         vid = cv2.VideoCapture(int(FLAGS.video))
     except:
@@ -50,6 +51,7 @@ def main(_argv):
 
     out = None
 
+    # 如果需要输出，则获取视频参数，并对要输出的各个参数赋值
     if FLAGS.output:
         # by default VideoCapture returns float instead of int
         width = int(vid.get(cv2.CAP_PROP_FRAME_WIDTH))
@@ -59,6 +61,7 @@ def main(_argv):
         out = cv2.VideoWriter(FLAGS.output, codec, fps, (width, height))
 
     while True:
+        # 捕获一帧图像，逐帧读取
         _, img = vid.read()
 
         if img is None:
@@ -66,19 +69,25 @@ def main(_argv):
             time.sleep(0.1)
             continue
 
+        # 重构图片格式——416，bgr to rgb
         img_in = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         img_in = tf.expand_dims(img_in, 0)
         img_in = transform_images(img_in, FLAGS.size)
 
+        # 日志中的时间标注，当前时间、运行时间
         t1 = time.time()
         boxes, scores, classes, nums = yolo.predict(img_in)
         t2 = time.time()
         times.append(t2-t1)
         times = times[-20:]
 
+        # 图像上画出检测出的目标，并标注相关信息，但是nums是什么？
         img = draw_outputs(img, (boxes, scores, classes, nums), class_names)
+
+        # 标注的样式，但是没读懂
         img = cv2.putText(img, "Time: {:.2f}ms".format(sum(times)/len(times)*1000), (0, 30),
                           cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (0, 0, 255), 2)
+
         if FLAGS.output:
             out.write(img)
         cv2.imshow('output', img)
