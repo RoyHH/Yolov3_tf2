@@ -117,8 +117,12 @@ def parse_tfrecord(tfrecord, class_table, size):
 
     return x_train, y_train
 
-
+'''载入训练数据函数，生成dataset.map
+进：数据集、类别表、训练图片格式
+出：dataset.map
+'''
 def load_tfrecord_dataset(file_pattern, class_file, size=416):
+    # 表示取得从0开始的行号
     LINE_NUMBER = -1  # TODO: use tf.lookup.TextFileIndex.LINE_NUMBER
     class_table = tf.lookup.StaticHashTable(tf.lookup.TextFileInitializer(
         class_file, tf.string, 0, tf.int64, LINE_NUMBER, delimiter="\n"), -1)
