@@ -83,6 +83,10 @@ def main(_argv):
     # 图像输出
     logging.info('output saved to: {}'.format(FLAGS.output))
 
+    # 绘制yolo的网络结构拓扑
+    tf.keras.utils.plot_model(yolo, to_file='./logs/model_yolov3_lr.png', show_shapes=True, show_layer_names=True, rankdir='LR',
+                              dpi=900, expand_nested=True)
+
 
 if __name__ == '__main__':
     try:
@@ -90,10 +94,14 @@ if __name__ == '__main__':
     except SystemExit:
         pass
 
+
 '''
 line 59
 检测图片的读入接口，当前是单个输入，这块需要修改成 批量识别 或者 按数据喂入信号进行识别启动
 
 line 84
 检测图片的输出接口，当前是单个输出，这块需要修改成 按照输入名称输出对应的文件     
+
+line 87
+增加代码：绘制yolo的网络结构拓扑
 '''

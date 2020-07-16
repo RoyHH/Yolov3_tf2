@@ -38,6 +38,7 @@ yolo_tiny_anchors = np.array([(10, 14), (23, 27), (37, 58),
 yolo_tiny_anchor_masks = np.array([[3, 4, 5], [0, 1, 2]])
 
 
+# 卷积部分
 def DarknetConv(x, filters, size, strides=1, batch_norm=True):
     if strides == 1:
         padding = 'same'
@@ -53,6 +54,7 @@ def DarknetConv(x, filters, size, strides=1, batch_norm=True):
     return x
 
 
+# 残差部分
 def DarknetResidual(x, filters):
     prev = x
     x = DarknetConv(x, filters // 2, 1)
@@ -99,6 +101,7 @@ def DarknetTiny(name=None):
 
 def YoloConv(filters, name=None):
     def yolo_conv(x_in):
+        # 判断x_in是否为元组tuple
         if isinstance(x_in, tuple):
             inputs = Input(x_in[0].shape[1:]), Input(x_in[1].shape[1:])
             x, x_skip = inputs
